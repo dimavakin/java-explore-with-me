@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ewm-db:5432/ewm
+    driverClassName: org.postgresql.Driver
+    username: ewmuser
+    password: 12345
+
+server:
+  port: 8080
+
+ru.practicum.stats-client:
+  server:
+    host: stats-server
+    port: 9090
