@@ -22,8 +22,6 @@ import ru.practicum.repository.EventRepository;
 import ru.practicum.repository.LocationRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -38,17 +36,11 @@ public class AdminEventServiceImpl implements AdminEventService {
 
     @Override
     public List<EventFullDto> getEventsFromAdmin(List<Long> users, List<String> states,
-                                                 List<Integer> categories, String rangeStart,
-                                                 String rangeEnd, Integer from, Integer size) {
+                                                 List<Integer> categories, LocalDateTime rangeStart,
+                                                 LocalDateTime rangeEnd, Integer from, Integer size) {
 
         Pageable pageable = PageRequest.of(from / size, size);
 
-
-        LocalDateTime start = (rangeStart != null && !rangeStart.isBlank()) ?
-                parseDateTime(rangeStart) : null;
-
-        LocalDateTime end = (rangeEnd != null && !rangeEnd.isBlank()) ?
-                parseDateTime(rangeEnd) : null;
         Page<Event> events = eventRepository.findEventsWithFilters(
                 (users == null || users.isEmpty()) ? null : users,
                 (states == null || states.isEmpty()) ? null : parseStates(states),
@@ -56,8 +48,8 @@ public class AdminEventServiceImpl implements AdminEventService {
                 pageable
         );
         List<Event> filteredEvents = events.stream()
-                .filter(e -> (start == null || !e.getEventDate().isBefore(start)) &&
-                        (end == null || !e.getEventDate().isAfter(end)))
+                .filter(e -> (rangeStart == null || !e.getEventDate().isBefore(rangeStart)) &&
+                        (rangeEnd == null || !e.getEventDate().isAfter(rangeEnd)))
                 .toList();
 
         return filteredEvents.stream()
@@ -160,22 +152,11 @@ public class AdminEventServiceImpl implements AdminEventService {
         }
     }
 
-    private void updateEventDateIfPresent(String eventDateStr, Event event) {
-        if (eventDateStr != null) {
-            LocalDateTime newEventDate = parseDateTime(eventDateStr);
-            validateEventDate(newEventDate);
-            event.setEventDate(newEventDate);
+    private void updateEventDateIfPresent(LocalDateTime eventDate, Event event) {
+        if (eventDate != null) {
+            validateEventDate(eventDate);
+            event.setEventDate(eventDate);
         }
     }
 
-    private LocalDateTime parseDateTime(String dateTimeStr) {
-        if (dateTimeStr == null || dateTimeStr.isBlank()) {
-            return null;
-        }
-        try {
-            return LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        } catch (DateTimeParseException e) {
-            throw new ValidationException("Invalid date format");
-        }
-    }
 }

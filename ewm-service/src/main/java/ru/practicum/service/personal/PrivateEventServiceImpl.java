@@ -33,8 +33,6 @@ import ru.practicum.dto.request.ParticipationRequestDto;
 import ru.practicum.model.User;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -125,11 +123,10 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return EventMapper.toEventFullDtoFromEvent(updatedEvent);
     }
 
-    private void updateEventDateIfPresent(String eventDateStr, Event event) {
-        if (eventDateStr != null) {
-            LocalDateTime newEventDate = parseDateTime(eventDateStr);
-            validateEventDate(newEventDate);
-            event.setEventDate(newEventDate);
+    private void updateEventDateIfPresent(LocalDateTime eventDate, Event event) {
+        if (eventDate != null) {
+            validateEventDate(eventDate);
+            event.setEventDate(eventDate);
         }
     }
 
@@ -207,17 +204,6 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                 toConfirm.stream().map(RequestMapper::toParticipationRequestDtoFromRequest).collect(Collectors.toList()),
                 toReject.stream().map(RequestMapper::toParticipationRequestDtoFromRequest).collect(Collectors.toList())
         );
-    }
-
-    private LocalDateTime parseDateTime(String dateTimeStr) {
-        if (dateTimeStr == null || dateTimeStr.isBlank()) {
-            return null;
-        }
-        try {
-            return LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        } catch (DateTimeParseException e) {
-            throw new ValidationException("Invalid date format");
-        }
     }
 
     private void validateEventDate(LocalDateTime eventDate) {

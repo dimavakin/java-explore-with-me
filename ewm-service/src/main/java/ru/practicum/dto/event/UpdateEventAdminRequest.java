@@ -1,5 +1,6 @@
 package ru.practicum.dto.event;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -13,6 +14,8 @@ import lombok.experimental.FieldDefaults;
 import ru.practicum.enums.EventAdminStateAction;
 import ru.practicum.model.Location;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,9 +27,8 @@ public class UpdateEventAdminRequest {
     Integer category;
     @Size(min = 20, max = 7000, message = "Description length must be between 20 and 7000 characters")
     String description;
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}",
-            message = "Event date must be in format 'yyyy-MM-dd HH:mm:ss'")
-    String eventDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime eventDate;
     @Valid
     Location location;
     Boolean paid;

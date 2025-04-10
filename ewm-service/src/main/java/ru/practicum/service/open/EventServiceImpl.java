@@ -18,10 +18,7 @@ import ru.practicum.repository.EventRepository;
 import ru.practicum.repository.EventViewRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,14 +28,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventShortDto> getEvents(String text, List<Integer> categories, Boolean paid,
-                                         String rangeStart, String rangeEnd, Boolean onlyAvailable,
+                                         LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean onlyAvailable,
                                          String sort, Integer from, Integer size) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = parseDateTime(rangeStart).orElse(now);
-        LocalDateTime end = parseDateTime(rangeEnd).orElse(null);
+
+        final LocalDateTime filterStartDate = rangeStart != null ? rangeStart : LocalDateTime.now();
         sort = sort == null ? "EVENT_DATE" : sort.toUpperCase();
 
-        if (end != null && end.isBefore(start)) {
+        if (rangeEnd != null && rangeEnd.isBefore(filterStartDate)) {
             throw new ValidationException("End date must be after start date");
         }
 
@@ -54,8 +50,8 @@ public class EventServiceImpl implements EventService {
         );
 
         List<Event> filteredEvents = events.stream()
-                .filter(e -> (!e.getEventDate().isBefore(start)) &&
-                        (end == null || !e.getEventDate().isAfter(end)))
+                .filter(e -> (!e.getEventDate().isBefore(filterStartDate)) &&
+                        (rangeEnd == null || !e.getEventDate().isAfter(rangeEnd)))
                 .toList();
 
         return filteredEvents.stream()
@@ -91,16 +87,4 @@ public class EventServiceImpl implements EventService {
         return PageRequest.of(from / size, size, Sort.by("eventDate").ascending());
     }
 
-
-    private Optional<LocalDateTime> parseDateTime(String dateTime) {
-        if (dateTime == null || dateTime.isBlank()) {
-            return Optional.empty();
-        }
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            return Optional.of(LocalDateTime.parse(dateTime, formatter));
-        } catch (DateTimeParseException e) {
-            throw new ValidationException("Invalid date format.");
-        }
-    }
 }
