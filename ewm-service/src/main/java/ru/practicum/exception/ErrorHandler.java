@@ -34,7 +34,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleEventUpdate(final EventUpdateException e) {
+    public ApiError handleEventUpdate(final BadRequestException e) {
         log.error("Ошибка в обновлении: ", e);
         return new ApiError(
                 "For the requested operation the conditions are not met.",

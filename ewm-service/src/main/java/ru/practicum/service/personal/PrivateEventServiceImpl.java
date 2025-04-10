@@ -18,7 +18,7 @@ import ru.practicum.dto.event.NewEventDto;
 import ru.practicum.dto.event.UpdateEventUserRequest;
 import ru.practicum.enums.EventState;
 import ru.practicum.enums.EventUserStateAction;
-import ru.practicum.exception.EventUpdateException;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.exception.ValidationException;
 import ru.practicum.repository.LocationRepository;
@@ -148,7 +148,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                 .orElseThrow(() -> new NotFoundException("Event not found or access denied"));
 
         if (!event.isRequestModeration() || event.getParticipantLimit() == 0) {
-            throw new EventUpdateException("No need to confirm requests for this event");
+            throw new BadRequestException("No need to confirm requests for this event");
         }
 
         List<Request> requests = requestRepository.findAllByIdInAndStatus(
@@ -157,7 +157,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         );
 
         if (requests.isEmpty()) {
-            throw new EventUpdateException("No pending requests found");
+            throw new BadRequestException("No pending requests found");
         }
 
         return updateRequest.getStatus() == RequestStatus.CONFIRMED
@@ -179,7 +179,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     private EventRequestStatusUpdateResult processConfirmation(Event event, List<Request> requests) {
         int availableSlots = event.getParticipantLimit() - event.getConfirmedRequests();
         if (availableSlots <= 0) {
-            throw new EventUpdateException("The participant limit has been reached");
+            throw new BadRequestException("The participant limit has been reached");
         }
 
         List<Request> toConfirm = requests.stream()
@@ -216,7 +216,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     private void validateEventDate(LocalDateTime eventDate) {
         if (eventDate.isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new EventUpdateException("Event date must be at least 2 hour from now");
+            throw new BadRequestException("Event date must be at least 2 hour from now");
         }
     }
 
@@ -244,7 +244,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                 event.setState(EventState.CANCELED);
                 break;
             default:
-                throw new EventUpdateException("Invalid state action: " + eventUserStateAction.toString());
+                throw new BadRequestException("Invalid state action: " + eventUserStateAction.toString());
         }
     }
 

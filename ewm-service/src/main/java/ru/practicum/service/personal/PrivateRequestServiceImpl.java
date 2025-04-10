@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.request.ParticipationRequestDto;
 import ru.practicum.enums.EventState;
 import ru.practicum.enums.RequestStatus;
-import ru.practicum.exception.EventUpdateException;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.Event;
@@ -45,22 +45,22 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
                 .orElseThrow(() -> new NotFoundException(String.format("Event with eventId=%d was not found", eventId)));
 
         if (requestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
-            throw new EventUpdateException("Request already exists for user " + userId + " and event " + eventId);
+            throw new BadRequestException("Request already exists for user " + userId + " and event " + eventId);
         }
 
         if (event.getInitiator().getId().equals(userId)) {
-            throw new EventUpdateException("Initiator cannot request participation in their own event");
+            throw new BadRequestException("Initiator cannot request participation in their own event");
         }
 
         if (event.getState() != EventState.PUBLISHED) {
-            throw new EventUpdateException("Cannot participate in unpublished event");
+            throw new BadRequestException("Cannot participate in unpublished event");
         }
 
 
         if (event.isRequestModeration()
                 && event.getParticipantLimit() > 0
                 && event.getConfirmedRequests() >= event.getParticipantLimit()) {
-            throw new EventUpdateException("Participant limit reached for event " + eventId);
+            throw new BadRequestException("Participant limit reached for event " + eventId);
         }
 
         Request request = new Request();

@@ -10,7 +10,7 @@ import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.UpdateEventAdminRequest;
 import ru.practicum.enums.EventAdminStateAction;
 import ru.practicum.enums.EventState;
-import ru.practicum.exception.EventUpdateException;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.exception.ValidationException;
 import ru.practicum.mapper.EventMapper;
@@ -131,26 +131,26 @@ public class AdminEventServiceImpl implements AdminEventService {
                     event.setState(EventState.CANCELED);
                     break;
                 default:
-                    throw new EventUpdateException("Invalid state action");
+                    throw new BadRequestException("Invalid state action");
             }
         }
     }
 
     private void validateRejectAction(Event event) {
         if (event.getState() == EventState.PUBLISHED) {
-            throw new EventUpdateException("Published events cannot be rejected");
+            throw new BadRequestException("Published events cannot be rejected");
         }
     }
 
     private void validatePublishAction(Event event) {
         if (event.getState() != EventState.PENDING) {
-            throw new EventUpdateException("Only pending events can be published");
+            throw new BadRequestException("Only pending events can be published");
         }
     }
 
     private void validateEventDate(LocalDateTime eventDate) {
         if (eventDate.isBefore(LocalDateTime.now().plusHours(1))) {
-            throw new EventUpdateException("Event date must be at least 1 hour from now");
+            throw new BadRequestException("Event date must be at least 1 hour from now");
         }
     }
 

@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.model.Event;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.dto.event.EventFullDto;
@@ -32,15 +33,23 @@ public class EventServiceImpl implements EventService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = parseDateTime(rangeStart).orElse(now);
         LocalDateTime end = parseDateTime(rangeEnd).orElse(null);
+        sort = sort == null ? "EVENT_DATE" : sort.toUpperCase();
+
+        if (end != null && end.isBefore(start)) {
+            throw new BadRequestException("End date must be after start date");
+        }
 
         Pageable pageable = createPageable(from, size, sort);
 
-        List<Event> events;
-        if ("VIEWS".equalsIgnoreCase(sort)) {
-            events = eventRepository.findEventsSortedByViews(text, categories, paid, onlyAvailable, pageable);
-        } else {
-            events = eventRepository.findEventsSortedByDate(text, categories, paid, onlyAvailable, pageable);
-        }
+        List<Event> events = eventRepository.findPublicEvents(
+                text != null ? text.trim().toLowerCase() : null,
+                categories,
+                paid,
+                onlyAvailable,
+                sort,
+                pageable
+        );
+
         List<Event> filteredEvents = events.stream()
                 .filter(e -> (!e.getEventDate().isBefore(start)) &&
                         (end == null || !e.getEventDate().isAfter(end)))

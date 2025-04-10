@@ -15,33 +15,25 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT e FROM Event e " +
             "WHERE e.state = 'PUBLISHED' " +
-            "AND (:text IS NULL OR LOWER(e.annotation) LIKE LOWER(CONCAT('%', :text, '%'))) " +
-            "AND (:text IS NULL OR LOWER(e.description) LIKE LOWER(CONCAT('%', :text, '%'))) " +
+            "AND (:text IS NULL OR " +
+            "   (e.annotation ILIKE %:text% OR " +
+            "    e.description ILIKE %:text%)) " +
             "AND (:categories IS NULL OR e.category.id IN :categories) " +
             "AND (:paid IS NULL OR e.paid = :paid) " +
-            "AND (:onlyAvailable = false OR e.participantLimit = 0 OR e.confirmedRequests < e.participantLimit) " +
-            "ORDER BY e.confirmedRequests DESC")
-    List<Event> findEventsSortedByViews(
+            "AND (:onlyAvailable = false OR " +
+            "   e.participantLimit = 0 OR " +
+            "   e.participantLimit > (" +
+            "       SELECT COUNT(r) FROM Request r WHERE r.event.id = e.id AND r.status = 'CONFIRMED'" +
+            "   )) " +
+            "ORDER BY " +
+            "   CASE WHEN :sort = 'EVENT_DATE' THEN e.eventDate END DESC, " +
+            "   CASE WHEN :sort = 'VIEWS' THEN e.views END DESC")
+    List<Event> findPublicEvents(
             @Param("text") String text,
             @Param("categories") List<Integer> categories,
             @Param("paid") Boolean paid,
             @Param("onlyAvailable") Boolean onlyAvailable,
-            Pageable pageable);
-
-
-    @Query("SELECT e FROM Event e " +
-            "WHERE e.state = 'PUBLISHED' " +
-            "AND (:text IS NULL OR LOWER(e.annotation) LIKE LOWER(CONCAT('%', :text, '%')) " +
-            "OR LOWER(e.description) LIKE LOWER(CONCAT('%', :text, '%'))) " +
-            "AND (:categories IS NULL OR e.category.id IN :categories) " +
-            "AND (:paid IS NULL OR e.paid = :paid) " +
-            "AND (:onlyAvailable = false OR e.participantLimit = 0 OR e.confirmedRequests < e.participantLimit) " +
-            "ORDER BY e.eventDate ASC")
-    List<Event> findEventsSortedByDate(
-            @Param("text") String text,
-            @Param("categories") List<Integer> categories,
-            @Param("paid") Boolean paid,
-            @Param("onlyAvailable") Boolean onlyAvailable,
+            @Param("sort") String sort,
             Pageable pageable);
 
     @Query("""

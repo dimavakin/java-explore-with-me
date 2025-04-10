@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.category.CategoryDto;
 import ru.practicum.dto.category.NewCategoryDto;
 import ru.practicum.exception.DuplicatedDataException;
-import ru.practicum.exception.EventUpdateException;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.mapper.CategoryMapper;
 import ru.practicum.model.Category;
@@ -39,7 +39,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         }
 
         if (eventRepository.existsByCategoryId(catId)) {
-            throw new EventUpdateException("Невозможно удалить категорию, так как с ней связаны события");
+            throw new BadRequestException("Невозможно удалить категорию, так как с ней связаны события");
         }
 
         categoryRepository.deleteById(catId);

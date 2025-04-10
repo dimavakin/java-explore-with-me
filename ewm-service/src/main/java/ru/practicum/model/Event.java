@@ -34,7 +34,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
+    @Column(name = "annotation", columnDefinition = "TEXT")
     String annotation;
 
     @ManyToOne
@@ -47,7 +47,7 @@ public class Event {
     @ToString.Exclude
     User initiator;
 
-    @Column
+    @Column(name = "description", columnDefinition = "TEXT")
     String description;
 
     @Column(name = "event_date")
