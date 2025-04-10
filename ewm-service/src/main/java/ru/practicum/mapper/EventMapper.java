@@ -87,7 +87,7 @@ public class EventMapper {
         event.setCategory(category);
         event.setInitiator(user);
         event.setDescription(newEventDto.getDescription());
-        event.setEventDate(parseDateTime(newEventDto.getEventDate()));
+        event.setEventDate(newEventDto.getEventDate());
         event.setLocation(location);
         event.setPaid(newEventDto.isPaid());
         if (newEventDto.getParticipantLimit() != null) {

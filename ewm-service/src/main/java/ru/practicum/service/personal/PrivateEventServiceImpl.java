@@ -69,7 +69,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
             throw new IllegalArgumentException("Category ID must not be null");
         }
 
-        validateEventDate(parseDateTime(newEventDto.getEventDate()));
+        validateEventDate(newEventDto.getEventDate());
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
                 String.format("User with userId=%d was not found", userId)));
 

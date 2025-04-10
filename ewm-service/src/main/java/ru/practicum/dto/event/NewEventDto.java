@@ -1,5 +1,6 @@
 package ru.practicum.dto.event;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.model.Location;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -30,10 +33,9 @@ public class NewEventDto {
     @NotBlank
     @NotNull
     String description;
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}",
-            message = "Event date must be in format 'yyyy-MM-dd HH:mm:ss'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull
-    String eventDate;
+    LocalDateTime eventDate;
     @Valid
     @NotNull
     Location location;
