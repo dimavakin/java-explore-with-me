@@ -32,7 +32,7 @@ public class Request {
     Long id;
 
     @Column(name = "created_on", nullable = false)
-    LocalDateTime created;
+    LocalDateTime created = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
