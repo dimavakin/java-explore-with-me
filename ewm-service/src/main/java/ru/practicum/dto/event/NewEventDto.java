@@ -20,12 +20,14 @@ import ru.practicum.model.Location;
 public class NewEventDto {
     @Size(min = 20, max = 2000, message = "Annotation length must be between 20 and 2000 characters")
     @NotBlank
+    @NotNull
     String annotation;
     @Positive(message = "Category ID must be positive")
     @NotNull
     Integer category;
     @Size(min = 20, max = 7000, message = "Description length must be between 20 and 7000 characters")
     @NotBlank
+    @NotNull
     String description;
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}",
             message = "Event date must be in format 'yyyy-MM-dd HH:mm:ss'")
@@ -39,5 +41,6 @@ public class NewEventDto {
     boolean requestModeration;
     @Size(min = 3, max = 120, message = "Title length must be between 3 and 120 characters")
     @NotBlank
+    @NotNull
     String title;
 }

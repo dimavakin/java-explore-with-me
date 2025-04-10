@@ -1,5 +1,6 @@
 package ru.practicum.controller.admin;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class AdminCompilationController {
 
     @PostMapping("/compilations")
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto postCompilation(@RequestBody NewCompilationDto newCompilationDto) {
+    public CompilationDto postCompilation(@RequestBody @Valid NewCompilationDto newCompilationDto) {
         return adminCompilationService.postCompilation(newCompilationDto);
     }
 
@@ -36,7 +37,7 @@ public class AdminCompilationController {
 
     @PatchMapping("/compilations/{compId}")
     public CompilationDto patchCompilation(@PathVariable Long compId,
-                                           @RequestBody UpdateCompilationRequest updateCompilationRequest) {
+                                           @RequestBody @Valid UpdateCompilationRequest updateCompilationRequest) {
         return adminCompilationService.patchCompilation(compId, updateCompilationRequest);
     }
 }

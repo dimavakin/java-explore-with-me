@@ -1,5 +1,6 @@
 package ru.practicum.controller.personal;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +39,7 @@ public class PrivateEventController {
     @PostMapping("/{userId}/events")
     @ResponseStatus(HttpStatus.CREATED)
     public EventFullDto postEvent(@PathVariable(name = "userId") Long userId,
-                                  @RequestBody NewEventDto newEventDto) {
+                                  @RequestBody @Valid NewEventDto newEventDto) {
         return privateEventService.postEvent(userId, newEventDto);
     }
 
@@ -50,7 +51,7 @@ public class PrivateEventController {
     @PatchMapping("/{userId}/events/{eventId}")
     public EventFullDto patchEvent(@PathVariable(name = "userId") Long userId,
                                    @PathVariable(name = "eventId") Long eventId,
-                                   @RequestBody UpdateEventUserRequest updateEventUserRequest) {
+                                   @RequestBody @Valid UpdateEventUserRequest updateEventUserRequest) {
         return privateEventService.patchEvent(userId, eventId, updateEventUserRequest);
     }
 
@@ -63,7 +64,7 @@ public class PrivateEventController {
     @PatchMapping("/{userId}/events/{eventId}/requests")
     public EventRequestStatusUpdateResult patchRequests(@PathVariable(name = "userId") Long userId,
                                                         @PathVariable(name = "eventId") Long eventId,
-                                                        @RequestBody EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
+                                                        @RequestBody @Valid EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
         return privateEventService.patchRequests(userId, eventId, eventRequestStatusUpdateRequest);
     }
 }

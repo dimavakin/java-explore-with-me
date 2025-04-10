@@ -1,5 +1,6 @@
 package ru.practicum.controller.admin;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class AdminUserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/users")
-    public UserDto postUsers(@RequestBody NewUserRequest newUserRequest) {
+    public UserDto postUsers(@RequestBody @Valid NewUserRequest newUserRequest) {
         return adminService.postUsers(newUserRequest);
     }
 
