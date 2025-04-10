@@ -2,17 +2,20 @@ package ru.practicum.mapper;
 
 import ru.practicum.dto.compilation.CompilationDto;
 import ru.practicum.dto.compilation.NewCompilationDto;
+import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.exception.ValidationException;
 import ru.practicum.model.Compilation;
 
+import java.util.List;
+
 public class CompilationMapper {
-    public static CompilationDto toCompilationDto(Compilation compilation) {
+    public static CompilationDto toCompilationDto(Compilation compilation, List<EventShortDto> eventShortDtos) {
         if (compilation == null) {
             throw new ValidationException("compilation can not be null");
         }
         CompilationDto dto = new CompilationDto();
         dto.setId(compilation.getId());
-        dto.setEvents(compilation.getEvents());
+        dto.setEvents(eventShortDtos);
         dto.setPinned(compilation.getPinned());
         dto.setTitle(compilation.getTitle());
         return dto;

@@ -104,6 +104,7 @@ public class EventMapper {
         event.setTitle(newEventDto.getTitle());
         event.setCreatedOn(LocalDateTime.now());
         event.setConfirmedRequests(0);
+        event.setViews(0L);
         return event;
     }
 

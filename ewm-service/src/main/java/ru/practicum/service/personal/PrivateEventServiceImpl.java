@@ -92,6 +92,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return EventMapper.toEventFullDtoFromEvent(event);
     }
 
+    @Transactional
     @Override
     public EventFullDto patchEvent(Long userId, Long eventId, UpdateEventUserRequest updateEventUserRequest) {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
@@ -238,16 +239,19 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     }
 
     private void processStateAction(Event event, EventUserStateAction eventUserStateAction) {
-        switch (eventUserStateAction) {
-            case SEND_TO_REVIEW:
-                event.setState(EventState.PENDING);
-                break;
-            case CANCEL_REVIEW:
-                event.setState(EventState.CANCELED);
-                break;
-            default:
-                throw new BadRequestException("Invalid state action: " + eventUserStateAction.toString());
+        if (eventUserStateAction != null) {
+            switch (eventUserStateAction) {
+                case SEND_TO_REVIEW:
+                    event.setState(EventState.PENDING);
+                    break;
+                case CANCEL_REVIEW:
+                    event.setState(EventState.CANCELED);
+                    break;
+                default:
+                    throw new BadRequestException("Invalid state action: " + eventUserStateAction.toString());
+            }
         }
+
     }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.model.Event;
 import ru.practicum.mapper.EventMapper;
@@ -59,6 +60,7 @@ public class EventServiceImpl implements EventService {
                 .map(EventMapper::toEventShortDtoFromEvent).toList();
     }
 
+    @Transactional
     @Override
     public EventFullDto getEvent(Long id) {
         Event event = eventRepository.findByIdAndState(id, EventState.PUBLISHED)
@@ -66,6 +68,7 @@ public class EventServiceImpl implements EventService {
                         String.format("Published event with id=%d not found", id)));
 
         eventRepository.incrementViews(id);
+        event.setViews(event.getViews() + 1);
 
         return EventMapper.toEventFullDtoFromEvent(event);
     }
