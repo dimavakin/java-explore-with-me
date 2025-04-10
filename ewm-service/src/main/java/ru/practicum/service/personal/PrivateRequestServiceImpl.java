@@ -55,6 +55,12 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
         if (event.getState() != EventState.PUBLISHED) {
             throw new BadRequestException("Cannot participate in unpublished event");
         }
+        if (event.getParticipantLimit() > 0) {
+            long confirmedRequests = requestRepository.countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
+            if (confirmedRequests >= event.getParticipantLimit()) {
+                throw new BadRequestException("Participant limit reached for event " + eventId);
+            }
+        }
 
         if (event.getRequestModeration()
                 && event.getParticipantLimit() > 0
@@ -65,7 +71,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
         Request request = new Request();
         request.setRequester(requester);
         request.setEvent(event);
-        request.setCreatedOn(LocalDateTime.now());
+        request.setCreated(LocalDateTime.now());
 
         if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
             request.setStatus(RequestStatus.CONFIRMED);

@@ -24,7 +24,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     @Override
     public CategoryDto postCategory(NewCategoryDto newCategoryDto) {
         try {
-            Category category = categoryRepository.save(CategoryMapper.toCategoryFromNewCategoryDto(newCategoryDto));
+            Category category = categoryRepository.saveAndFlush(CategoryMapper.toCategoryFromNewCategoryDto(newCategoryDto));
             return CategoryMapper.toCategoryDto(category);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicatedDataException("Category with this name already exists");
@@ -55,7 +55,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
             existingCategory.setName(categoryDto.getName());
         }
         try {
-            Category updatedCategory = categoryRepository.save(existingCategory);
+            Category updatedCategory = categoryRepository.saveAndFlush(existingCategory);
             return CategoryMapper.toCategoryDto(updatedCategory);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicatedDataException("Category with this name already exists");

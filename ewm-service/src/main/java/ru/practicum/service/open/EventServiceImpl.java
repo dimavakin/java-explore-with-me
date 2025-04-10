@@ -98,7 +98,8 @@ public class EventServiceImpl implements EventService {
             return Optional.empty();
         }
         try {
-            return Optional.of(LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return Optional.of(LocalDateTime.parse(dateTime, formatter));
         } catch (DateTimeParseException e) {
             throw new ValidationException("Invalid date format.");
         }

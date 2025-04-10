@@ -14,7 +14,7 @@ public class RequestMapper {
         ParticipationRequestDto dto = new ParticipationRequestDto();
         dto.setId(request.getId());
         dto.setRequester(request.getRequester().getId());
-        dto.setCreatedOn(LocalDateTime.now());
+        dto.setCreated(LocalDateTime.now());
         dto.setStatus(request.getStatus());
         dto.setEvent(request.getEvent().getId());
         return dto;

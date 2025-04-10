@@ -1,11 +1,13 @@
 package ru.practicum.service.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.exception.DuplicatedDataException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.User;
 import ru.practicum.mapper.UserMapper;
@@ -35,8 +37,12 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Transactional
     @Override
     public UserDto postUsers(NewUserRequest newUserRequest) {
-        User user = UserMapper.toUserFromNewUserRequest(newUserRequest);
-        return UserMapper.toUserDtoFromUser(userRepository.save(user));
+        try {
+            User user = userRepository.saveAndFlush(UserMapper.toUserFromNewUserRequest(newUserRequest));
+            return UserMapper.toUserDtoFromUser(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicatedDataException("Category with this name already exists");
+        }
     }
 
     @Transactional

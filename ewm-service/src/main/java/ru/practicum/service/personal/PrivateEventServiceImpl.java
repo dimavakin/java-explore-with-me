@@ -98,6 +98,9 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Event with id=%d for user id=%d not found", eventId, userId)));
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            throw new BadRequestException("The event has already been published");
+        }
         updateIfPresent(updateEventUserRequest.getAnnotation(), event::setAnnotation);
         updateIfPresent(updateEventUserRequest.getDescription(), event::setDescription);
         updateIfPresent(updateEventUserRequest.getTitle(), event::setTitle);

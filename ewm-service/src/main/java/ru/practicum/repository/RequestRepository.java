@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findAllByEventId(Long eventId);
 
+    Integer countByEventIdAndStatus(Long eventId, RequestStatus status);
+
     Optional<Request> findByIdAndRequesterId(Long id, Long requesterId);
 
     List<Request> findAllByRequesterId(Long requesterId);
