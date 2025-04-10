@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.dto.hit.HitRequest;
 import ru.practicum.dto.stats.StatsResponse;
-import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ValidationException;
 
 import java.time.LocalDateTime;
