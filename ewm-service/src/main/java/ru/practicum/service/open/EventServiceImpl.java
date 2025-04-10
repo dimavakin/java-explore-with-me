@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.exception.BadRequestException;
 import ru.practicum.model.Event;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.dto.event.EventFullDto;
@@ -40,7 +39,7 @@ public class EventServiceImpl implements EventService {
         sort = sort == null ? "EVENT_DATE" : sort.toUpperCase();
 
         if (end != null && end.isBefore(start)) {
-            throw new BadRequestException("End date must be after start date");
+            throw new ValidationException("End date must be after start date");
         }
 
         Pageable pageable = createPageable(from, size, sort);

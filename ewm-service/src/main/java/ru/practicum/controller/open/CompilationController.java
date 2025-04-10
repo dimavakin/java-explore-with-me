@@ -34,7 +34,7 @@ public class CompilationController {
         return compilationService.getCompilations(pinned, from, size);
     }
 
-    @GetMapping("/compId")
+    @GetMapping("/{compId}")
     public CompilationDto getCompilation(@PathVariable Long compId, HttpServletRequest request) {
         HitRequest hitRequest = new HitRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now().toString());
         statsClient.saveHit(hitRequest);

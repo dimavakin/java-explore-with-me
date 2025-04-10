@@ -4,8 +4,6 @@ import ru.practicum.exception.ValidationException;
 import ru.practicum.model.Request;
 import ru.practicum.dto.request.ParticipationRequestDto;
 
-import java.time.LocalDateTime;
-
 public class RequestMapper {
     public static ParticipationRequestDto toParticipationRequestDtoFromRequest(Request request) {
         if (request == null) {
@@ -14,7 +12,7 @@ public class RequestMapper {
         ParticipationRequestDto dto = new ParticipationRequestDto();
         dto.setId(request.getId());
         dto.setRequester(request.getRequester().getId());
-        dto.setCreated(LocalDateTime.now());
+        dto.setCreated(request.getCreated());
         dto.setStatus(request.getStatus());
         dto.setEvent(request.getEvent().getId());
         return dto;
