@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface StatsService {
-    public void saveHit(HitRequest request);
+    void saveHit(HitRequest request);
 
-    public List<StatsResponse> getStats(LocalDateTime start, LocalDateTime end,
+    List<StatsResponse> getStats(LocalDateTime start, LocalDateTime end,
                                         List<String> uris, boolean unique);
 }

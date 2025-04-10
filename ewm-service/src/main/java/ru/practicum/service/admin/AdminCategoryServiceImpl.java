@@ -1,0 +1,64 @@
+package ru.practicum.service.admin;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.dto.category.CategoryDto;
+import ru.practicum.dto.category.NewCategoryDto;
+import ru.practicum.exception.DuplicatedDataException;
+import ru.practicum.exception.EventUpdateException;
+import ru.practicum.exception.NotFoundException;
+import ru.practicum.mapper.CategoryMapper;
+import ru.practicum.model.Category;
+import ru.practicum.repository.CategoryRepository;
+import ru.practicum.repository.EventRepository;
+
+@Service
+@RequiredArgsConstructor
+public class AdminCategoryServiceImpl implements AdminCategoryService {
+    private final CategoryRepository categoryRepository;
+    private final EventRepository eventRepository;
+
+    @Transactional
+    @Override
+    public CategoryDto postCategory(NewCategoryDto newCategoryDto) {
+        try {
+            Category category = categoryRepository.save(CategoryMapper.toCategoryFromNewCategoryDto(newCategoryDto));
+            return CategoryMapper.toCategoryDto(category);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicatedDataException("Category with this name already exists");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteCategory(Integer catId) {
+        if (!categoryRepository.existsById(catId)) {
+            throw new NotFoundException(String.format("Категория с id=%d не найдена", catId));
+        }
+
+        if (eventRepository.existsByCategoryId(catId)) {
+            throw new EventUpdateException("Невозможно удалить категорию, так как с ней связаны события");
+        }
+
+        categoryRepository.deleteById(catId);
+    }
+
+    @Transactional
+    @Override
+    public CategoryDto patchCategory(Integer catId, CategoryDto categoryDto) {
+        Category existingCategory = categoryRepository.findById(catId)
+                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d was not found", catId)));
+
+        if (categoryDto.getName() != null) {
+            existingCategory.setName(categoryDto.getName());
+        }
+        try {
+            Category updatedCategory = categoryRepository.save(existingCategory);
+            return CategoryMapper.toCategoryDto(updatedCategory);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicatedDataException("Category with this name already exists");
+        }
+    }
+}
