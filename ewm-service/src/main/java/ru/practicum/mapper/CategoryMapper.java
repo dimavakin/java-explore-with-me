@@ -24,14 +24,4 @@ public class CategoryMapper {
         category.setName(newCategoryDto.getName());
         return category;
     }
-
-    public static Category toCategoryFromCategoryDto(CategoryDto CategoryDto, Integer catId) {
-        if (CategoryDto == null) {
-            throw new ValidationException("category can not be null");
-        }
-        Category category = new Category();
-        category.setId(catId);
-        category.setName(CategoryDto.getName());
-        return category;
-    }
 }
