@@ -68,7 +68,6 @@ public class EventServiceImpl implements EventService {
                         String.format("Published event with id=%d not found", id)));
 
         eventRepository.incrementViews(id);
-        event.setViews(event.getViews() + 1);
 
         return EventMapper.toEventFullDtoFromEvent(event);
     }

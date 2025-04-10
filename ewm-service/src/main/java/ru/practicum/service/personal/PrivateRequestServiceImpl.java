@@ -56,7 +56,6 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
             throw new BadRequestException("Cannot participate in unpublished event");
         }
 
-
         if (event.getRequestModeration()
                 && event.getParticipantLimit() > 0
                 && event.getConfirmedRequests() >= event.getParticipantLimit()) {
