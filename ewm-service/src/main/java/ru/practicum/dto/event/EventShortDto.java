@@ -8,8 +8,6 @@ import lombok.experimental.FieldDefaults;
 import ru.practicum.dto.category.CategoryDto;
 import ru.practicum.dto.user.UserShortDto;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,9 +17,9 @@ public class EventShortDto {
     String annotation;
     CategoryDto category;
     String description;
-    LocalDateTime createdOn;
+    String createdOn;
     Integer confirmedRequests;
-    LocalDateTime eventDate;
+    String eventDate;
     UserShortDto initiator;
     boolean paid;
     String title;

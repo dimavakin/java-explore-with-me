@@ -23,7 +23,9 @@ public class CompilationMapper {
             throw new ValidationException("compilation can not be null");
         }
         Compilation compilation = new Compilation();
-        compilation.setPinned(newCompilationDto.getPinned());
+        if (newCompilationDto.getPinned() != null) {
+            compilation.setPinned(newCompilationDto.getPinned());
+        }
         compilation.setTitle(newCompilationDto.getTitle());
         return compilation;
     }

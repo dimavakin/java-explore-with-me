@@ -30,14 +30,14 @@ public class EventMapper {
         dto.setAnnotation(event.getAnnotation());
         dto.setCategory(categoryDto);
         dto.setConfirmedRequests(event.getConfirmedRequests());
-        dto.setCreatedOn(event.getCreatedOn());
+        dto.setCreatedOn(formatDateTime(event.getCreatedOn()));
         dto.setDescription(event.getDescription());
-        dto.setEventDate(event.getEventDate());
+        dto.setEventDate(formatDateTime(event.getEventDate()));
         dto.setInitiator(initiator);
         dto.setLocation(event.getLocation());
         dto.setPaid(event.getPaid());
         dto.setParticipantLimit(event.getParticipantLimit());
-        dto.setPublishedOn(event.getPublishedOn());
+        dto.setPublishedOn(formatDateTime(event.getPublishedOn()));
         dto.setRequestModeration(event.getRequestModeration());
         dto.setState(event.getState());
         dto.setTitle(event.getTitle());
@@ -60,8 +60,8 @@ public class EventMapper {
         dto.setCategory(categoryDto);
         dto.setDescription(event.getDescription());
         dto.setConfirmedRequests(event.getConfirmedRequests());
-        dto.setCreatedOn(event.getCreatedOn());
-        dto.setEventDate(event.getEventDate());
+        dto.setCreatedOn(formatDateTime(event.getCreatedOn()));
+        dto.setEventDate(formatDateTime(event.getEventDate()));
         dto.setInitiator(initiator);
         dto.setPaid(event.getPaid());
         dto.setTitle(event.getTitle());
@@ -108,6 +108,13 @@ public class EventMapper {
         } catch (DateTimeParseException e) {
             throw new ValidationException("Invalid date format");
         }
+    }
+
+    private static String formatDateTime(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return null;
+        }
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
 

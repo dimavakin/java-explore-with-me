@@ -10,8 +10,6 @@ import ru.practicum.enums.EventState;
 import ru.practicum.model.Location;
 import ru.practicum.dto.user.UserShortDto;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,14 +19,14 @@ public class EventFullDto {
     String annotation;
     CategoryDto category;
     Integer confirmedRequests;
-    LocalDateTime createdOn;
+    String createdOn;
     String description;
-    LocalDateTime eventDate;
+    String eventDate;
     UserShortDto initiator;
     Location location;
     boolean paid;
     Integer participantLimit;
-    LocalDateTime publishedOn;
+    String publishedOn;
     boolean requestModeration;
     EventState state;
     String title;
