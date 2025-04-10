@@ -38,5 +38,4 @@ public class HitEntity {
 
     @Column
     LocalDateTime timestamp;
-
 }

@@ -25,7 +25,7 @@ public class CategoryController {
 
     @GetMapping
     public List<CategoryDto> getCategories(@RequestParam(defaultValue = "0") Integer from, @RequestParam(defaultValue = "10") Integer size, HttpServletRequest request) {
-        HitRequest hitRequest = new HitRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now().toString());
+        HitRequest hitRequest = new HitRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now());
         statsClient.saveHit(hitRequest);
 
         return categoryService.getCategories(from, size);
@@ -33,7 +33,7 @@ public class CategoryController {
 
     @GetMapping("/{catId}")
     public CategoryDto getCategory(@PathVariable Integer catId, HttpServletRequest request) {
-        HitRequest hitRequest = new HitRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now().toString());
+        HitRequest hitRequest = new HitRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now());
         statsClient.saveHit(hitRequest);
 
         return categoryService.getCategory(catId);
