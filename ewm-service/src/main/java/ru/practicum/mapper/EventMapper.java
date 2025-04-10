@@ -90,8 +90,16 @@ public class EventMapper {
         event.setEventDate(parseDateTime(newEventDto.getEventDate()));
         event.setLocation(location);
         event.setPaid(newEventDto.isPaid());
-        event.setParticipantLimit(newEventDto.getParticipantLimit());
-        event.setRequestModeration(newEventDto.isRequestModeration());
+        if (newEventDto.getParticipantLimit() != null) {
+            event.setParticipantLimit(newEventDto.getParticipantLimit());
+        } else {
+            event.setParticipantLimit(0);
+        }
+        if (newEventDto.getParticipantLimit() != null) {
+            event.setRequestModeration(newEventDto.isRequestModeration());
+        } else {
+            event.setRequestModeration(true);
+        }
         event.setState(EventState.PENDING);
         event.setTitle(newEventDto.getTitle());
         event.setCreatedOn(LocalDateTime.now());

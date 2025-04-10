@@ -68,6 +68,8 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         if (newEventDto.getCategory() == null) {
             throw new IllegalArgumentException("Category ID must not be null");
         }
+
+        validateEventDate(parseDateTime(newEventDto.getEventDate()));
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
                 String.format("User with userId=%d was not found", userId)));
 
@@ -216,7 +218,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     private void validateEventDate(LocalDateTime eventDate) {
         if (eventDate.isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new BadRequestException("Event date must be at least 2 hour from now");
+            throw new ValidationException("Event date must be at least 2 hour from now");
         }
     }
 

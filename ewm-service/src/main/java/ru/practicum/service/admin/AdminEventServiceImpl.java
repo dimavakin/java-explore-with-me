@@ -150,7 +150,7 @@ public class AdminEventServiceImpl implements AdminEventService {
 
     private void validateEventDate(LocalDateTime eventDate) {
         if (eventDate.isBefore(LocalDateTime.now().plusHours(1))) {
-            throw new BadRequestException("Event date must be at least 1 hour from now");
+            throw new ValidationException("Event date must be at least 1 hour from now");
         }
     }
 
