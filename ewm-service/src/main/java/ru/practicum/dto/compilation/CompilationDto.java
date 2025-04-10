@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.dto.event.EventShortDto;
-import ru.practicum.model.Event;
 
 import java.util.List;
 

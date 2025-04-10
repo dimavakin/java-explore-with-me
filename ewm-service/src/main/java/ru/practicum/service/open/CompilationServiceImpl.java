@@ -14,7 +14,6 @@ import ru.practicum.model.Compilation;
 import ru.practicum.repository.CompilationRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
