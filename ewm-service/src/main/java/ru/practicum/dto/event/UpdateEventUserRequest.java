@@ -29,10 +29,10 @@ public class UpdateEventUserRequest {
     String eventDate;
     @Valid
     Location location;
-    boolean paid;
+    Boolean paid;
     @PositiveOrZero(message = "Participant limit must be positive or zero")
     Integer participantLimit;
-    boolean requestModeration;
+    Boolean requestModeration;
     EventUserStateAction stateAction;
     @Size(min = 3, max = 120, message = "Title length must be between 3 and 120 characters")
     String title;

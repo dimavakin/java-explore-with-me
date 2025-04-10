@@ -57,7 +57,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
         }
 
 
-        if (event.isRequestModeration()
+        if (event.getRequestModeration()
                 && event.getParticipantLimit() > 0
                 && event.getConfirmedRequests() >= event.getParticipantLimit()) {
             throw new BadRequestException("Participant limit reached for event " + eventId);
@@ -68,7 +68,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
         request.setEvent(event);
         request.setCreatedOn(LocalDateTime.now());
 
-        if (!event.isRequestModeration() || event.getParticipantLimit() == 0) {
+        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
             request.setStatus(RequestStatus.CONFIRMED);
             eventRepository.incrementConfirmedRequests(eventId, 1);
         } else {

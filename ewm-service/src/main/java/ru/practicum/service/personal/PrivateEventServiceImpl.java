@@ -98,9 +98,9 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         updateIfPresent(updateEventUserRequest.getAnnotation(), event::setAnnotation);
         updateIfPresent(updateEventUserRequest.getDescription(), event::setDescription);
         updateIfPresent(updateEventUserRequest.getTitle(), event::setTitle);
-        updateIfPresent(updateEventUserRequest.isPaid(), event::setPaid);
+        updateIfPresent(updateEventUserRequest.getPaid(), event::setPaid);
         updateIfPresent(updateEventUserRequest.getParticipantLimit(), event::setParticipantLimit);
-        updateIfPresent(updateEventUserRequest.isRequestModeration(), event::setRequestModeration);
+        updateIfPresent(updateEventUserRequest.getRequestModeration(), event::setRequestModeration);
 
         if (updateEventUserRequest.getLocation() != null) {
             Location location = locationRepository.save(updateEventUserRequest.getLocation());
@@ -147,7 +147,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() -> new NotFoundException("Event not found or access denied"));
 
-        if (!event.isRequestModeration() || event.getParticipantLimit() == 0) {
+        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
             throw new BadRequestException("No need to confirm requests for this event");
         }
 

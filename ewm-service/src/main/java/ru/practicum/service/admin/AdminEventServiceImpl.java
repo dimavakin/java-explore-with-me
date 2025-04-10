@@ -74,9 +74,9 @@ public class AdminEventServiceImpl implements AdminEventService {
         updateIfPresent(updateEventAdminRequest.getAnnotation(), event::setAnnotation);
         updateIfPresent(updateEventAdminRequest.getDescription(), event::setDescription);
         updateIfPresent(updateEventAdminRequest.getTitle(), event::setTitle);
-        updateIfPresent(updateEventAdminRequest.isPaid(), event::setPaid);
+        updateIfPresent(updateEventAdminRequest.getPaid(), event::setPaid);
         updateIfPresent(updateEventAdminRequest.getParticipantLimit(), event::setParticipantLimit);
-        updateIfPresent(updateEventAdminRequest.isRequestModeration(), event::setRequestModeration);
+        updateIfPresent(updateEventAdminRequest.getRequestModeration(), event::setRequestModeration);
         if (updateEventAdminRequest.getLocation() != null) {
             Location location = locationRepository.save(updateEventAdminRequest.getLocation());
             if (event.getLocation() != null) {

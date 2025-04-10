@@ -62,13 +62,13 @@ public class Event {
     Location location;
 
     @Column
-    boolean paid;
+    Boolean paid;
 
     @Column(name = "participant_limit")
     Integer participantLimit;
 
     @Column(name = "request_moderation")
-    boolean requestModeration;
+    Boolean requestModeration;
 
     @Column
     @Enumerated(EnumType.STRING)

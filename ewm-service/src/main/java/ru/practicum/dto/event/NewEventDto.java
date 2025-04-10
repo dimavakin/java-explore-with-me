@@ -37,6 +37,7 @@ public class NewEventDto {
     @NotNull
     Location location;
     boolean paid;
+    @Positive(message = "participantLimit must be positive")
     Integer participantLimit;
     boolean requestModeration;
     @Size(min = 3, max = 120, message = "Title length must be between 3 and 120 characters")
