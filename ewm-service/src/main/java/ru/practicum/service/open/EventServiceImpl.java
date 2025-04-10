@@ -14,7 +14,9 @@ import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.enums.EventState;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.exception.ValidationException;
+import ru.practicum.model.EventView;
 import ru.practicum.repository.EventRepository;
+import ru.practicum.repository.EventViewRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +28,7 @@ import java.util.Optional;
 @Service
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
+    private final EventViewRepository eventViewRepository;
 
     @Override
     public List<EventShortDto> getEvents(String text, List<Integer> categories, Boolean paid,
@@ -62,12 +65,22 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     @Override
-    public EventFullDto getEvent(Long id) {
+    public EventFullDto getEvent(Long id, String ip) {
         Event event = eventRepository.findByIdAndState(id, EventState.PUBLISHED)
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Published event with id=%d not found", id)));
 
-        eventRepository.incrementViews(id);
+        boolean isUniqueIp = !eventViewRepository.existsByEventIdAndIp(id, ip);
+
+        if (isUniqueIp) {
+            eventRepository.incrementViews(id);
+
+            EventView eventView = new EventView();
+            eventView.setEventId(id);
+            eventView.setIp(ip);
+            eventViewRepository.save(eventView);
+        }
+
 
         return EventMapper.toEventFullDtoFromEvent(event);
     }

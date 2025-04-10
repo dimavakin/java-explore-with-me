@@ -10,5 +10,5 @@ public interface EventService {
                                   String rangeStart, String rangeEnd, Boolean onlyAvailable,
                                   String sort, Integer from, Integer size);
 
-    EventFullDto getEvent(Long id);
+    EventFullDto getEvent(Long id, String ip);
 }

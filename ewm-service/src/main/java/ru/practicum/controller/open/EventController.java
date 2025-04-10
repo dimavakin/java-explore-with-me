@@ -46,6 +46,6 @@ public class EventController {
         HitRequest hitRequest = new HitRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now().toString());
         statsClient.saveHit(hitRequest);
 
-        return eventService.getEvent(id);
+        return eventService.getEvent(id, request.getRemoteAddr());
     }
 }
