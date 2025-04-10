@@ -32,6 +32,8 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
         if (newCompilationDto.getEvents() != null && !newCompilationDto.getEvents().isEmpty()) {
             List<Event> events = eventRepository.findAllById(newCompilationDto.getEvents());
             compilation.setEvents(events);
+        } else {
+            compilation.setEvents(List.of());
         }
 
         return CompilationMapper.toCompilationDto(compilationRepository.save(compilation));
