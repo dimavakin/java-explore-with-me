@@ -32,8 +32,8 @@ public class EventController {
                                          @RequestParam(required = false) String rangeEnd,
                                          @RequestParam(required = false) Boolean onlyAvailable,
                                          @RequestParam(required = false) String sort,
-                                         @RequestParam(required = false) Integer from,
-                                         @RequestParam(required = false) Integer size,
+                                         @RequestParam(defaultValue = "0") Integer from,
+                                         @RequestParam(defaultValue = "10") Integer size,
                                          HttpServletRequest request) {
         HitRequest hitRequest = new HitRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now().toString());
         statsClient.saveHit(hitRequest);

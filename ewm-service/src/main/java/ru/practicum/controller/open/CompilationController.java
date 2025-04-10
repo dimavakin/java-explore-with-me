@@ -25,8 +25,8 @@ public class CompilationController {
 
     @GetMapping
     public List<CompilationDto> getCompilations(@RequestParam(required = false) Boolean pinned,
-                                                @RequestParam Integer from,
-                                                @RequestParam Integer size,
+                                                @RequestParam(defaultValue = "0") Integer from,
+                                                @RequestParam(defaultValue = "10") Integer size,
                                                 HttpServletRequest request) {
         HitRequest hitRequest = new HitRequest(APP_NAME, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now().toString());
         statsClient.saveHit(hitRequest);

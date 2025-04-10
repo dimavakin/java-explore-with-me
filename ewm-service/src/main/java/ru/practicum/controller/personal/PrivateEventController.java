@@ -30,8 +30,8 @@ public class PrivateEventController {
 
     @GetMapping("/{userId}/events")
     public List<EventShortDto> getEvents(@PathVariable(name = "userId") Long userId,
-                                         @RequestParam Integer from,
-                                         @RequestParam Integer size) {
+                                         @RequestParam(defaultValue = "0") Integer from,
+                                         @RequestParam(defaultValue = "10") Integer size) {
         return privateEventService.getEvents(userId, from, size);
     }
 
