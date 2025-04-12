@@ -1,7 +1,9 @@
 package ru.practicum.controller.admin;
 
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,8 +22,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminEventController {
-    private final AdminEventService adminEventService;
+    AdminEventService adminEventService;
 
     @GetMapping("/events")
     public List<EventFullDto> getEvents(@RequestParam(required = false) List<Long> users,

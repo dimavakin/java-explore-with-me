@@ -1,6 +1,8 @@
 package ru.practicum.service.admin;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +18,16 @@ import ru.practicum.model.Event;
 import ru.practicum.repository.CompilationRepository;
 import ru.practicum.repository.EventRepository;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminCompilationServiceImpl implements AdminCompilationService {
-    private final EventRepository eventRepository;
-    private final CompilationRepository compilationRepository;
+    EventRepository eventRepository;
+    CompilationRepository compilationRepository;
 
     @Transactional
     @Override

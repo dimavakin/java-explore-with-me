@@ -1,6 +1,8 @@
 package ru.practicum.service.open;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +18,9 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CategoryServiceImpl implements CategoryService {
-    private final CategoryRepository categoryRepository;
+    CategoryRepository categoryRepository;
 
     @Override
     public List<CategoryDto> getCategories(Integer from, Integer size) {

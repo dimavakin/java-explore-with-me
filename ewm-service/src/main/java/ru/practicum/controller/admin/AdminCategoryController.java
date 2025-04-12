@@ -1,7 +1,9 @@
 package ru.practicum.controller.admin;
 
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +18,12 @@ import ru.practicum.service.admin.AdminCategoryService;
 import ru.practicum.dto.category.CategoryDto;
 import ru.practicum.dto.category.NewCategoryDto;
 
-
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminCategoryController {
-    private final AdminCategoryService adminCategoryService;
+    AdminCategoryService adminCategoryService;
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)

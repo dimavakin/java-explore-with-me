@@ -3,7 +3,6 @@ package ru.practicum.mapper;
 import ru.practicum.dto.compilation.CompilationDto;
 import ru.practicum.dto.compilation.NewCompilationDto;
 import ru.practicum.dto.event.EventShortDto;
-import ru.practicum.exception.ValidationException;
 import ru.practicum.model.Compilation;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 public class CompilationMapper {
     public static CompilationDto toCompilationDto(Compilation compilation, List<EventShortDto> eventShortDtos) {
         if (compilation == null) {
-            throw new ValidationException("compilation can not be null");
+            return null;
         }
         CompilationDto dto = new CompilationDto();
         dto.setId(compilation.getId());
@@ -23,7 +22,7 @@ public class CompilationMapper {
 
     public static Compilation toCompilationFromNewCompilationDto(NewCompilationDto newCompilationDto) {
         if (newCompilationDto == null) {
-            throw new ValidationException("compilation can not be null");
+            return null;
         }
         Compilation compilation = new Compilation();
         if (newCompilationDto.getPinned() != null) {

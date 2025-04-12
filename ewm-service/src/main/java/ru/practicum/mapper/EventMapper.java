@@ -6,7 +6,6 @@ import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.dto.event.NewEventDto;
 import ru.practicum.enums.EventState;
-import ru.practicum.exception.ValidationException;
 import ru.practicum.model.Event;
 import ru.practicum.model.Location;
 import ru.practicum.model.User;
@@ -19,7 +18,7 @@ import java.time.format.DateTimeParseException;
 public class EventMapper {
     public static EventFullDto toEventFullDtoFromEvent(Event event) {
         if (event == null) {
-            throw new ValidationException("event can not be null");
+            return null;
         }
         EventFullDto dto = new EventFullDto();
 
@@ -48,7 +47,7 @@ public class EventMapper {
 
     public static EventShortDto toEventShortDtoFromEvent(Event event) {
         if (event == null) {
-            throw new ValidationException("event can not be null");
+            return null;
         }
         EventShortDto dto = new EventShortDto();
 
@@ -72,13 +71,13 @@ public class EventMapper {
 
     public static Event toEventFromNewEventDto(NewEventDto newEventDto, User user, Category category, Location location) {
         if (newEventDto == null) {
-            throw new ValidationException("newEvent can not be null");
+            return null;
         }
         if (user == null) {
-            throw new ValidationException("user can not be null");
+            return null;
         }
         if (category == null) {
-            throw new ValidationException("category can not be null");
+            return null;
         }
 
         Event event = new Event();
@@ -115,7 +114,7 @@ public class EventMapper {
         try {
             return LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         } catch (DateTimeParseException e) {
-            throw new ValidationException("Invalid date format");
+            return null;
         }
     }
 

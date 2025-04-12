@@ -1,7 +1,9 @@
 package ru.practicum.controller.open;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,10 +22,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EventController {
-    private final StatsClient statsClient;
-    private static final String APP_NAME = "ewm-main-service";
-    private final EventService eventService;
+    final StatsClient statsClient;
+    static String APP_NAME = "ewm-main-service";
+    final EventService eventService;
 
     @GetMapping
     public List<EventShortDto> getEvents(@RequestParam(required = false) String text,

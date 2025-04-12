@@ -1,6 +1,5 @@
 package ru.practicum.mapper;
 
-import ru.practicum.exception.ValidationException;
 import ru.practicum.model.User;
 import ru.practicum.dto.user.NewUserRequest;
 import ru.practicum.dto.user.UserDto;
@@ -9,7 +8,7 @@ import ru.practicum.dto.user.UserShortDto;
 public class UserMapper {
     public static UserShortDto toUserShortDtoFromUser(User user) {
         if (user == null) {
-            throw new ValidationException("user can not be null");
+            return null;
         }
         UserShortDto dto = new UserShortDto();
         dto.setId(user.getId());
@@ -19,7 +18,7 @@ public class UserMapper {
 
     public static UserDto toUserDtoFromUser(User user) {
         if (user == null) {
-            throw new ValidationException("user can not be null");
+            return null;
         }
         UserDto dto = new UserDto();
         dto.setId(user.getId());
@@ -30,7 +29,7 @@ public class UserMapper {
 
     public static User toUserFromNewUserRequest(NewUserRequest newUserRequest) {
         if (newUserRequest == null) {
-            throw new ValidationException("newUserRequest can not be null");
+            return null;
         }
         User user = new User();
         user.setName(newUserRequest.getName());

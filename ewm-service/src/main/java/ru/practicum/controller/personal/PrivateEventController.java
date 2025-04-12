@@ -1,7 +1,9 @@
 package ru.practicum.controller.personal;
 
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,8 +28,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrivateEventController {
-    private final PrivateEventService privateEventService;
+    PrivateEventService privateEventService;
 
     @GetMapping("/{userId}/events")
     public List<EventShortDto> getEvents(@PathVariable(name = "userId") Long userId,

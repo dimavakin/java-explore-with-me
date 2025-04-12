@@ -1,6 +1,8 @@
 package ru.practicum.service.personal;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.request.ParticipationRequestDto;
@@ -21,10 +23,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrivateRequestServiceImpl implements PrivateRequestService {
-    private final EventRepository eventRepository;
-    private final UserRepository userRepository;
-    private final RequestRepository requestRepository;
+    EventRepository eventRepository;
+    UserRepository userRepository;
+    RequestRepository requestRepository;
 
     @Override
     public List<ParticipationRequestDto> getRequestsFromUser(Long userId) {

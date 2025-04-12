@@ -1,6 +1,8 @@
 package ru.practicum.service.admin;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +18,10 @@ import ru.practicum.repository.EventRepository;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminCategoryServiceImpl implements AdminCategoryService {
-    private final CategoryRepository categoryRepository;
-    private final EventRepository eventRepository;
+    CategoryRepository categoryRepository;
+    EventRepository eventRepository;
 
     @Transactional
     @Override

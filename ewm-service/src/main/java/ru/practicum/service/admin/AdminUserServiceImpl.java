@@ -1,6 +1,8 @@
 package ru.practicum.service.admin;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +21,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminUserServiceImpl implements AdminUserService {
-    private final UserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     public List<UserDto> getUsers(List<Long> ids, Integer from, Integer size) {

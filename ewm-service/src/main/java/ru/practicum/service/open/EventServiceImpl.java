@@ -1,6 +1,8 @@
 package ru.practicum.service.open;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,9 +24,10 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EventServiceImpl implements EventService {
-    private final EventRepository eventRepository;
-    private final EventViewRepository eventViewRepository;
+    EventRepository eventRepository;
+    EventViewRepository eventViewRepository;
 
     @Override
     public List<EventShortDto> getEvents(String text, List<Integer> categories, Boolean paid,

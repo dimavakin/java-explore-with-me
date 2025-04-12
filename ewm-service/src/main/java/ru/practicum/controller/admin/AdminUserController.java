@@ -1,7 +1,9 @@
 package ru.practicum.controller.admin;
 
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +24,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminUserController {
-    private final AdminUserService adminService;
+    AdminUserService adminService;
 
     @GetMapping("/users")
     public List<UserDto> getUsers(@RequestParam(required = false) List<Long> ids,

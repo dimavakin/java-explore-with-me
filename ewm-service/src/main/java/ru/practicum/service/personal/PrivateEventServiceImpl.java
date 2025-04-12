@@ -1,6 +1,8 @@
 package ru.practicum.service.personal;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,12 +42,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrivateEventServiceImpl implements PrivateEventService {
-    private final CategoryRepository categoryRepository;
-    private final EventRepository eventRepository;
-    private final UserRepository userRepository;
-    private final RequestRepository requestRepository;
-    private final LocationRepository locationRepository;
+    CategoryRepository categoryRepository;
+    EventRepository eventRepository;
+    UserRepository userRepository;
+    RequestRepository requestRepository;
+    LocationRepository locationRepository;
 
     @Override
     public List<EventShortDto> getEvents(Long userId, Integer from, Integer size) {

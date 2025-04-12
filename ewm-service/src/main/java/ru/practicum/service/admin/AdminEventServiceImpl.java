@@ -1,6 +1,8 @@
 package ru.practicum.service.admin;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +31,11 @@ import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminEventServiceImpl implements AdminEventService {
-    private final CategoryRepository categoryRepository;
-    private final EventRepository eventRepository;
-    private final LocationRepository locationRepository;
+    CategoryRepository categoryRepository;
+    EventRepository eventRepository;
+    LocationRepository locationRepository;
 
     @Override
     public List<EventFullDto> getEventsFromAdmin(List<Long> users, List<String> states,
