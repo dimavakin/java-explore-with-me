@@ -30,4 +30,14 @@ public class ErrorHandler {
         log.error("Дублирование данных: ", e);
         return new ErrorResponse("Дублирование данных", e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleEventUpdate(final BadRequestException e) {
+        log.error("Ошибка в обновлении: ", e);
+        return new ErrorResponse(
+                "For the requested operation the conditions are not met.",
+                e.getMessage()
+        );
+    }
 }

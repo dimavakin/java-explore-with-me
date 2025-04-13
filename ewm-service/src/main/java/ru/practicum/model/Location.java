@@ -1,4 +1,4 @@
-package ru.practicum.stats;
+package ru.practicum.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,34 +8,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Data
-@Table(name = "hits")
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "location")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class HitEntity {
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
+    private Long id;
     @Column
-    String app;
-
+    Double lat;
     @Column
-    String uri;
-
-    @Column
-    String ip;
-
-    @Column
-    LocalDateTime timestamp;
+    Double lon;
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.dto.hit.HitRequest;
 import ru.practicum.dto.stats.StatsResponse;
+import ru.practicum.exception.ValidationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +33,9 @@ public class StatsController {
                                         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                                         @RequestParam(required = false) List<String> uris,
                                         @RequestParam(defaultValue = "false") boolean unique) {
-
+        if (start.isAfter(end)) {
+            throw new ValidationException("Start date cannot be after end date.");
+        }
         return statsService.getStats(start, end,
                 uris, unique);
     }
