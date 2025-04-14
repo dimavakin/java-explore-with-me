@@ -389,9 +389,92 @@
 		},
 		{
 			"name": "Получение комментария по айди",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
+							"\r",
+							"    try {\r",
+							"        // Шаг 1 — Создание пользователя\r",
+							"        const user = await api.addUser(rnd.getUser());\r",
+							"        const category = await api.addCategory(rnd.getCategory());\r",
+							"        \r",
+							"        // Шаг 2 — Создание события в DRAFT\r",
+							"        let event = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
+							"        \r",
+							"        // Проверяем, что событие было создано\r",
+							"        if (!event?.id || !user?.id) {\r",
+							"            throw new Error(\"user.id или event.id отсутствуют.\");\r",
+							"        }\r",
+							"\r",
+							"        // Устанавливаем переменные\r",
+							"        pm.collectionVariables.set(\"uid\", user.id);\r",
+							"\r",
+							"        event = await api.publishEvent(event.id);\r",
+							"\r",
+							"        const comment = await api.addComment({\r",
+							"            userId: user.id,\r",
+							"            eventId: event.id,\r",
+							"            text: rnd.getWord(10)\r",
+							"        });\r",
+							"\r",
+							"        // Устанавливаем переменные\r",
+							"        pm.collectionVariables.set(\"uid\", user.id);\r",
+							"        pm.collectionVariables.set(\"commentId\", comment.id);\r",
+							"    } catch (err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных:\", err);\r",
+							"        throw err;\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => {\r",
+							"    try {\r",
+							"        await main();\r",
+							"    } catch (e) {\r",
+							"        console.error(e);\r",
+							"    } finally {\r",
+							"        clearInterval(interval);\r",
+							"    }\r",
+							"}, 100);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"✅ Статус 200 при получении комментария по ID\", () => {\r",
+							"    const userId = pm.collectionVariables.get(\"uid\");\r",
+							"    const commentId = pm.collectionVariables.get(\"commentId\");\r",
+							"\r",
+							"    // Проверка, что переменные существуют\r",
+							"    pm.expect(userId, \"userId должен быть задан\").to.not.be.null;\r",
+							"    pm.expect(commentId, \"commentId должен быть задан\").to.not.be.null;\r",
+							"\r",
+							"    // Проверяем, что данные комментария корректны (здесь просто пример)\r",
+							"    pm.expect(commentId, \"commentId должен быть задан\").to.not.be.null;\r",
+							"    pm.expect(userId, \"userId должен быть задан\").to.not.be.null;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": "{{baseUrl}}/users/{{uid}}/comments/{{commentId}}"
 			},
 			"response": []
 		},
@@ -483,10 +566,16 @@
 							"    pm.expect(response).to.have.property(\"text\", expectedText);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"✅ Комментарий должен остаться у того же пользователя\", () => {\r",
-							"    pm.expect(response.user).to.have.property(\"id\", expectedAuthorId);\r",
-							"});\r",
-							""
+							"\r",
+							"pm.test(\"✅ Комментарий должен принадлежать тому же пользователю\", () => {\r",
+							"    \r",
+							"    // Проверяем существование объекта пользователя\r",
+							"    pm.expect(response).to.have.property('user').that.is.an('object');\r",
+							"    \r",
+							"    // Сравниваем ID автора с ожидаемым значением (с приведением типов)\r",
+							"    pm.expect(Number(response.user.id)).to.eql(Number(expectedAuthorId));\r",
+							"    \r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
