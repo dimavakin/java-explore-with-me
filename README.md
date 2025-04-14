@@ -4,8 +4,6 @@
 https://github.com/dimavakin/java-explore-with-me/pull/3
 
 
-
-Template repository for ExploreWithMe project.
 Функциональность "Комментарии"
 Добавлена возможность оставлять комментарии к событиям
 Реализовано управление своими комментариями
