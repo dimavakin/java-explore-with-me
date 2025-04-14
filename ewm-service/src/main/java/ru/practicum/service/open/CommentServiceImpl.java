@@ -27,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentDto> getComments(Long eventId, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
 
-        if(!eventRepository.existsById(eventId)){
+        if (!eventRepository.existsById(eventId)) {
             throw new NotFoundException(String.format("Event with id=%d not found", eventId));
         }
         Page<Comment> comments = commentRepository.findByEventId(eventId, pageable);

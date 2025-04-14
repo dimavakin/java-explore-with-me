@@ -6,7 +6,7 @@ import ru.practicum.dto.comment.NewCommentDto;
 import ru.practicum.dto.comment.UpdateCommentDto;
 
 public interface PrivateCommentService {
-    CommentDto getComment(Long userId,Long commentId);
+    CommentDto getComment(Long userId, Long commentId);
 
     CommentDto postComment(Long userId, Long eventId, NewCommentDto newCommentDto);
 
