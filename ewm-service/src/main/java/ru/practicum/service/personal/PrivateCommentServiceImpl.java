@@ -3,8 +3,8 @@ package ru.practicum.service.personal;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.comment.CommentDto;
 import ru.practicum.dto.comment.NewCommentDto;
 import ru.practicum.dto.comment.UpdateCommentDto;
@@ -38,6 +38,7 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
         return CommentMapper.toCommentDtoFromComment(comment);
     }
 
+    @Transactional
     @Override
     public CommentDto postComment(Long userId, Long eventId, NewCommentDto newCommentDto) {
         Event event = eventRepository.findById(eventId)
@@ -57,18 +58,19 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
         return CommentMapper.toCommentDtoFromComment(comment);
     }
 
+    @Transactional
     @Override
-    public ResponseEntity<Void> deleteComment(Long userId, Long commentId) {
+    public void deleteComment(Long userId, Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException(String.format("Comment with id=%d not found", commentId)));
         if (comment.getUser().getId().equals(userId) || comment.getEvent().getInitiator().getId().equals(userId)) {
             commentRepository.deleteById(commentId);
-            return ResponseEntity.status(204).build();
         } else {
             throw new BadRequestException("The user is not the author or the initiator");
         }
     }
 
+    @Transactional
     @Override
     public CommentDto patchComment(Long userId, Long commentId, UpdateCommentDto updateCommentDto) {
         Comment comment = commentRepository.findById(commentId)

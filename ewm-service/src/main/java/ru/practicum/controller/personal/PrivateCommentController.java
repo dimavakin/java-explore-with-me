@@ -41,7 +41,8 @@ public class PrivateCommentController {
 
     @DeleteMapping("/{userId}/comments/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable @Positive Long userId, @PathVariable @Positive Long commentId) {
-        return privateCommentService.deleteComment(userId, commentId);
+        privateCommentService.deleteComment(userId, commentId);
+        return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/{userId}/comments/{commentId}")
