@@ -13,7 +13,6 @@ import ru.practicum.dto.user.UserShortDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class EventMapper {
     public static EventFullDto toEventFullDtoFromEvent(Event event) {
@@ -105,17 +104,6 @@ public class EventMapper {
         event.setConfirmedRequests(0);
         event.setViews(0L);
         return event;
-    }
-
-    private static LocalDateTime parseDateTime(String dateTimeStr) {
-        if (dateTimeStr == null || dateTimeStr.isBlank()) {
-            return null;
-        }
-        try {
-            return LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        } catch (DateTimeParseException e) {
-            return null;
-        }
     }
 
     private static String formatDateTime(LocalDateTime dateTime) {
